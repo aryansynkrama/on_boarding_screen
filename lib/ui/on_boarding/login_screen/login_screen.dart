@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value!.isEmpty) {
                             return "Please Enter The Email";
                           } else {
-                            bool result = validatePassword(value);
+                            bool result = validateEmail(value);
                             if (result) {
                               return null;
                             } else {
