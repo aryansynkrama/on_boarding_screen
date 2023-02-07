@@ -19,5 +19,5 @@ class StringConstant{
   static const String appleUrl = "www.apple.com";
   static const String pleaseEnterCorrectEmail = "Please Enter Correct Email";
   static const String passwordShouldContain = "Password should contain Capital, Small letters & Numbers & Special Letter";
-
+  static const String couldNotLaunch = "Could Not Launch";
 }
