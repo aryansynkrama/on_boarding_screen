@@ -150,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               fontSize: screenHeight * 0.022,
                               fontWeight: FontWeight.bold,
+                              color: Color(0xff2a554d),
                             ),
                           ),
                         ),
@@ -296,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool validateEmail(String email) {
     String _email = email.trim();
-    if (pass_valid.hasMatch(_email)) {
+    if (isValidEmail.hasMatch(_email)) {
       return true;
     } else {
       return false;
