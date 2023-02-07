@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:on_boarding_screen/ui/on_boarding/registration_screen/MyExample.dart';
+import 'package:on_boarding_screen/ui/on_boarding/registration_screen/registration_screen.dart';
 
 import 'ui/on_boarding/login_screen/login_screen.dart';
 
