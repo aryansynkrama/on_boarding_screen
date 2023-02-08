@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:on_boarding_screen/contants/string_constant.dart';
+import 'package:on_boarding_screen/database/database_helper.dart';
+import 'package:on_boarding_screen/model/user_model.dart';
 import 'package:on_boarding_screen/ui/on_boarding/registration_screen/registration_screen.dart';
+import 'package:on_boarding_screen/ui/on_boarding/show_users.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
@@ -20,7 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -94,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenHeight * 0.1,
                           child: MyTextFormField(
+                            controller: usernameController,
                             screenHeight: screenHeight,
                             fontSize: screenHeight * 0.018,
                             labelText: StringConstant.userLabelText,
@@ -123,7 +130,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: screenHeight * 0.1,
                           child: MyTextFormField(
-
+                            // focusNode: FocusScope.of(context).requestFocus(FocusNode()),
+                            controller: passwordController,
                             screenHeight: screenHeight,
                             labelText: StringConstant.passwordLabelText,
                             fontSize: screenHeight * 0.025,
@@ -143,14 +151,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: screenHeight * 0.016),
 
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            StringConstant.forgetPassword,
-                            style: TextStyle(
-                              fontSize: screenHeight * 0.022,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff2a554d),
+                        GestureDetector(
+                          onTap: () async {
+                            // await DatabaseHelper.instance
+                            //     .add(User(username: usernameController.text, password: passwordController.text));
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              StringConstant.forgetPassword,
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.022,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff2a554d),
+                              ),
                             ),
                           ),
                         ),
@@ -160,14 +174,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             buildRow(),
                             GestureDetector(
-                              onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => RegistrationScreen(),
-                                  ),
-                                );
-                                }
+                              onTap: ()async {
+                                // if (_formKey.currentState!.validate()) {
+                                await DatabaseHelper.instance
+                                    .add(User(username: usernameController.text, password: passwordController.text));
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ShowUser(),
+                                    ),
+                                  );
+                                // }
                               },
                               child: Container(
                                 height: screenHeight * 0.05,
@@ -263,9 +279,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.height * 0.04 ,
+          width: MediaQuery.of(context).size.height * 0.04,
           child: Checkbox(
-
             value: isChecked,
             onChanged: (bool? value) {
               setState(() {
@@ -322,18 +337,23 @@ class MyTextFormField extends StatelessWidget {
     this.labelText,
     this.fontSize,
     this.validator,
+    this.controller, this.focusNode,
   });
 
   final double screenHeight;
   final String? labelText;
   final double? fontSize;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
+      focusNode: focusNode,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 1),
+          contentPadding: EdgeInsets.symmetric(vertical: 1),
           errorStyle: TextStyle(height: 1),
           border: UnderlineInputBorder(),
           labelText: labelText,
