@@ -151,20 +151,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: screenHeight * 0.016),
 
-                        GestureDetector(
-                          onTap: () async {
-                            // await DatabaseHelper.instance
-                            //     .add(User(username: usernameController.text, password: passwordController.text));
-                          },
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              StringConstant.forgetPassword,
-                              style: TextStyle(
-                                fontSize: screenHeight * 0.022,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff2a554d),
-                              ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            StringConstant.forgetPassword,
+                            style: TextStyle(
+                              fontSize: screenHeight * 0.022,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff2a554d),
                             ),
                           ),
                         ),
@@ -174,15 +168,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             buildRow(),
                             GestureDetector(
-                              onTap: ()async {
+                              onTap: () async {
                                 // if (_formKey.currentState!.validate()) {
-                                await DatabaseHelper.instance
-                                    .add(User(username: usernameController.text, password: passwordController.text));
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => ShowUser(),
-                                    ),
-                                  );
+
+                                await DatabaseHelper.instance.add(User(
+                                    username: usernameController.text,
+                                    password: passwordController.text));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ShowUser(),
+                                  ),
+                                );
+                                usernameController.clear();
+                                passwordController.clear();
                                 // }
                               },
                               child: Container(
@@ -337,7 +335,8 @@ class MyTextFormField extends StatelessWidget {
     this.labelText,
     this.fontSize,
     this.validator,
-    this.controller, this.focusNode,
+    this.controller,
+    this.focusNode,
   });
 
   final double screenHeight;

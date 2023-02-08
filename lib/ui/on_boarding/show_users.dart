@@ -14,36 +14,46 @@ class _ShowUserState extends State<ShowUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-        body: FutureBuilder<List<User>>(
-            future: DatabaseHelper.instance.getUsers(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: Text('Loading...'),
-                );
-              }
-              return snapshot.data!.isEmpty ? Center(child: Text('No List'),) :
-              ListView(
-                children: snapshot.data!.map((user) {
-                  return Center(
-                    child: Card(
-                      color: Colors.red,
-                      child: ListTile(
-
-                        title: Text(user.username),
-                        onLongPress: () {
-                          setState(() {
-                            DatabaseHelper.instance.remove(user.id!.toInt());
-                          });
-                        },
-                      ),
-                    ),
-                  );
-                }).toList(),
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        elevation: 0,
+        title: Text("Users List"),
+        centerTitle: true,
+      ),
+      body: FutureBuilder<List<User>>(
+          future: DatabaseHelper.instance.getUsers(),
+          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text('Loading...'),
               );
-            }),
+            }
+            return snapshot.data!.isEmpty
+                ? Center(
+                    child: Text('No List'),
+                  )
+                : ListView(
+                    children: snapshot.data!.map((user) {
+                      return Center(
+                        child: Card(
+                          // color: Colors.red,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Text(user.id.toString()),
+                            ),
+                            title: Text(user.username),
+                            onLongPress: () {
+                              setState(() {
+                                DatabaseHelper.instance
+                                    .remove(user.id!.toInt());
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+          }),
     );
   }
 }
