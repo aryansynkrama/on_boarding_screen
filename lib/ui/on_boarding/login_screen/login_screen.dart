@@ -8,25 +8,48 @@ import 'package:on_boarding_screen/ui/on_boarding/show_users.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, this.note}) : super(key: key);
+  final User? note;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  bool get isUpdating => widget.note != null;
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
   RegExp isValidEmail = RegExp(
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  int? selectedId;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (isUpdating) {
+      usernameController.text = widget.note!.username;
+      // passwordController.text = widget.note!.password;
+    }
+  }
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
+    if (widget.note != null) {
+      usernameController.text = widget.note!.username;
+      // passwordController.text = widget.note!.password;
+    }
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -43,8 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             top: screenHeight * 0.2,
             left: screenWidth * 0.1,
-            child: Text(
-              StringConstant.loginButton,
+            child: Text(StringConstant.loginButton ,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: screenHeight * 0.065,
@@ -171,17 +193,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () async {
                                 // if (_formKey.currentState!.validate()) {
 
-                                await DatabaseHelper.instance.add(User(
+
+                                  User user = User(
                                     username: usernameController.text,
-                                    password: passwordController.text));
-                                Navigator.of(context).push(
+                                    password: passwordController.text,
+                                  );
+                                  await DatabaseHelper.instance.add(user);
+
+                                Navigator.push(
+                                  context,
                                   MaterialPageRoute(
                                     builder: (context) => ShowUser(),
                                   ),
                                 );
-                                usernameController.clear();
-                                passwordController.clear();
-                                // }
+
                               },
                               child: Container(
                                 height: screenHeight * 0.05,
@@ -194,8 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 child: Center(
-                                  child: Text(
-                                    StringConstant.signIn,
+                                  child: Text(StringConstant.signIn,
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.02,
                                       fontWeight: FontWeight.w500,
@@ -349,6 +373,7 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: (value) {},
       controller: controller,
       focusNode: focusNode,
       decoration: InputDecoration(
