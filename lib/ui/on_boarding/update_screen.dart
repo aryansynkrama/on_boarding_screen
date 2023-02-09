@@ -49,7 +49,7 @@ class UpdateScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  final userN = userController.value.text;
+                  final userN = userController.text;
                   final passN = passwordController.value.text;
 
                   if (userN.isEmpty || passN.isEmpty) {
