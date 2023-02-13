@@ -12,7 +12,7 @@ class UpdateScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userController = TextEditingController();
     final passwordController = TextEditingController();
-    if(user !=null){
+    if (user != null) {
       userController.text = user!.username;
       passwordController.text = user!.password;
     }
@@ -30,9 +30,7 @@ class UpdateScreen extends StatelessWidget {
               ),
               TextFormField(
                 controller: userController,
-                onChanged: (value) {
-
-                },
+                onChanged: (value) {},
                 decoration: InputDecoration(
                   hintText: 'Username',
                 ),
@@ -43,9 +41,7 @@ class UpdateScreen extends StatelessWidget {
               ),
               TextFormField(
                 controller: passwordController,
-                decoration: InputDecoration(
-                  hintText: 'Password,'
-                ),
+                decoration: InputDecoration(hintText: 'Password,'),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -56,7 +52,8 @@ class UpdateScreen extends StatelessWidget {
                     return;
                   }
 
-                  final User model = User(username: userN,password: passN, id: user!.id);
+                  final User model =
+                      User(username: userN, password: passN, id: user!.id);
                   await DatabaseHelper.instance.update(model);
 
                   Navigator.pop(context);

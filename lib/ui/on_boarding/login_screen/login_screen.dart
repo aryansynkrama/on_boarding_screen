@@ -31,11 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (isUpdating) {
-      usernameController.text = widget.note!.username;
-      // passwordController.text = widget.note!.password;
-    }
   }
+
   @override
   void dispose() {
     usernameController.dispose();
@@ -46,10 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    if (widget.note != null) {
-      usernameController.text = widget.note!.username;
-      // passwordController.text = widget.note!.password;
-    }
+
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -66,7 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             top: screenHeight * 0.2,
             left: screenWidth * 0.1,
-            child: Text(StringConstant.loginButton ,
+            child: Text(
+              StringConstant.loginButton,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: screenHeight * 0.065,
@@ -193,12 +188,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () async {
                                 // if (_formKey.currentState!.validate()) {
 
-
-                                  User user = User(
-                                    username: usernameController.text,
-                                    password: passwordController.text,
-                                  );
-                                  await DatabaseHelper.instance.add(user);
+                                User user = User(
+                                  username: usernameController.text,
+                                  password: passwordController.text,
+                                );
+                                await DatabaseHelper.instance.add(user);
+                                usernameController.clear();
+                                passwordController.clear();
 
                                 Navigator.push(
                                   context,
@@ -206,7 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     builder: (context) => ShowUser(),
                                   ),
                                 );
-
                               },
                               child: Container(
                                 height: screenHeight * 0.05,
@@ -219,7 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 child: Center(
-                                  child: Text(StringConstant.signIn,
+                                  child: Text(
+                                    StringConstant.signIn,
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.02,
                                       fontWeight: FontWeight.w500,

@@ -48,20 +48,19 @@ class _ShowUserState extends State<ShowUser> {
                           ),
                           title:
                               Text(snapshot.data![index].username.toString()),
-                          subtitle: Text(snapshot.data![index].password.toString()),
+                          subtitle:
+                              Text(snapshot.data![index].password.toString()),
                           trailing: IconButton(
                             onPressed: () async {
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => UpdateScreen(user: snapshot.data![index]),
+                                  builder: (context) =>
+                                      UpdateScreen(user: snapshot.data![index]),
                                 ),
                               );
-                              setState(() {
-
-                              });
+                              setState(() {});
                             },
-
                             icon: Icon(Icons.edit),
                           ),
                           onLongPress: () {
